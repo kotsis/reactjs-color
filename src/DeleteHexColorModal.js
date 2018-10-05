@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+//katskos: A bootstrap based modal delete form for hex colors
 class DeleteHexColorModal extends Component {
   constructor(props){
     super(props);

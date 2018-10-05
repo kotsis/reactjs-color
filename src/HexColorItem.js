@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+//katskos: A bootstrap based list item of a hex color. This wa srequired to be made a Component so that we
+//can use it in a loop and be able to call a parent method with parameters from props.
 class HexColorItem extends Component {
 
   constructor(props){

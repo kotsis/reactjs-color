@@ -55,10 +55,15 @@ class App extends Component {
   }
   showEditHexModal(color_index){
     this.setState({selected_color_index: color_index});
-    jQuery('#myEditModal').modal('show');
+    //this.myEditModal.setState({updated_color: this.state.color_list[this.state.selected_color_index]}, function(){
+      jQuery('#myEditModal').modal('show');
+    //});
   }
   updateColor(color_index, new_color){
-
+    var new_list = this.state.color_list.slice();
+    new_list[color_index] = new_color;
+    this.setState({selected_color_index: null, color_list: new_list});
+    jQuery('#myEditModal').modal('hide');
   }
 
   render() {
@@ -132,6 +137,7 @@ class App extends Component {
           onRef={ref => (this.myEditModal = ref)}
           nid={this.state.selected_color_index}
           colorval={this.state.color_list[this.state.selected_color_index]}
+          onSaveClick={this.updateColor}
         />
         <DeleteHexColorModal id="myDeleteModal"
           onRef={ref => (this.myDeleteModal = ref)}
