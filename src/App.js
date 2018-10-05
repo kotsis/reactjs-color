@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import EditHexColorModal from './EditHexColorModal.js';
 import DeleteHexColorModal from './DeleteHexColorModal.js';
+import HexColorItem from './HexColorItem.js';
 import jQuery from 'jquery';
 import 'popper.js';
 import 'bootstrap';
@@ -13,16 +14,12 @@ class App extends Component {
     this.state = { current_color: '', selected_color_index: null, color_list: [], error_msg: '' };//katskos: we initiate the applicaiton state here
     this.handleChangedColor = this.handleChangedColor.bind(this);
     this.handleSaveColor = this.handleSaveColor.bind(this);
-  }
 
-  addColorToList(){
+    this.showEditHexModal = this.showEditHexModal.bind(this);
+    this.updateColor = this.updateColor.bind(this);
 
-  }
-  removeColorFromList(){
-
-  }
-  updateColorInList(){
-
+    this.showDeleteHexModal = this.showDeleteHexModal.bind(this);
+    this.deleteColor = this.deleteColor.bind(this);
   }
 
   handleChangedColor(e) {
@@ -45,12 +42,24 @@ class App extends Component {
     //}));
   }
 
-  showEditHexModal(){
-    jQuery('#myEditModal').modal('show');
-  }
-  showDeleteHexModal(){
+  showDeleteHexModal(color_index){
+    this.setState({selected_color_index: color_index});
     jQuery('#myDeleteModal').modal('show');
   }
+  deleteColor(color_index){
+    var new_list = this.state.color_list.slice();
+    new_list.splice(color_index, 1);
+    this.setState({selected_color_index: null, color_list: new_list});
+    jQuery('#myDeleteModal').modal('hide');
+  }
+  showEditHexModal(color_index){
+    this.setState({selected_color_index: color_index});
+    jQuery('#myEditModal').modal('show');
+  }
+  updateColor(color_index, new_color){
+
+  }
+
   render() {
 
     //katskos: conditional div with error message
@@ -67,6 +76,11 @@ class App extends Component {
                   </div>
     }
 
+    //katskos: color list
+    const hex_color_list = this.state.color_list.map((colorval, key) =>
+      <HexColorItem key={'coloritem'+key} onEditClick={this.showEditHexModal} onDeleteClick={this.showDeleteHexModal} nid={key} colorval={colorval} />
+    );
+
     return (
       <div className="App">
         <div className="container">
@@ -81,48 +95,10 @@ class App extends Component {
             <div className="col-md-4 order-md-2 mb-4">
               <h4 className="d-flex justify-content-between align-items-center mb-3">
                 <span className="text-muted">Hex color list</span>
-                <span className="badge badge-secondary badge-pill">3</span>
+                <span className="badge badge-secondary badge-pill">{this.state.color_list.length}</span>
               </h4>
               <ul className="list-group mb-3">
-                <li className="list-group-item d-flex justify-content-between lh-condensed">
-                  <div>
-                    <h6 className="my-0">Hex color 1</h6>
-                    <small className="text-muted">#010101</small>
-                  </div>
-                  <span className="col-md-1" style={{border: '1px solid #ced4da', backgroundColor: '#010101'}}></span>
-                  <button type="button" className="btn btn-warning" onClick={this.showEditHexModal}>
-                    <i className="fa fa-edit"></i>
-                  </button>
-                  <button type="button" className="btn btn-danger" onClick={this.showDeleteHexModal}>
-                    <i className="fa fa-trash"></i>
-                  </button>
-                </li>
-                <li className="list-group-item d-flex justify-content-between lh-condensed">
-                  <div>
-                    <h6 className="my-0">Hex color 2</h6>
-                    <small className="text-muted">#010101</small>
-                  </div>
-                  <span className="col-md-1" style={{border: '1px solid #ced4da', backgroundColor: '#010101'}}></span>
-                  <button type="button" className="btn btn-warning" onClick={this.showEditHexModal}>
-                    <i className="fa fa-edit"></i>
-                  </button>
-                  <button type="button" className="btn btn-danger" onClick={this.showDeleteHexModal}>
-                    <i className="fa fa-trash"></i>
-                  </button>
-                </li>
-                <li className="list-group-item d-flex justify-content-between lh-condensed">
-                  <div>
-                    <h6 className="my-0">Hex color 3</h6>
-                    <small className="text-muted">#010101</small>
-                  </div>
-                  <span className="col-md-1" style={{border: '1px solid #ced4da', backgroundColor: '#010101'}}></span>
-                  <button type="button" className="btn btn-warning" onClick={this.showEditHexModal}>
-                    <i className="fa fa-edit"></i>
-                  </button>
-                  <button type="button" className="btn btn-danger" onClick={this.showDeleteHexModal}>
-                    <i className="fa fa-trash"></i>
-                  </button>
-                </li>
+                {hex_color_list}
               </ul>
             </div>
             <div className="col-md-8 order-md-1">
@@ -146,8 +122,17 @@ class App extends Component {
           </footer>
         </div>
 
-        <EditHexColorModal id="myEditModal" onRef={ref => (this.myEditModal = ref)} />
-        <DeleteHexColorModal id="myDeleteModal" onRef={ref => (this.myDeleteModal = ref)} />
+        <EditHexColorModal id="myEditModal"
+          onRef={ref => (this.myEditModal = ref)}
+          nid={this.state.selected_color_index}
+          colorval={this.state.color_list[this.state.selected_color_index]}
+        />
+        <DeleteHexColorModal id="myDeleteModal"
+          onRef={ref => (this.myDeleteModal = ref)}
+          nid={this.state.selected_color_index}
+          colorval={this.state.color_list[this.state.selected_color_index]}
+          onDeleteClick={this.deleteColor}
+        />
       </div>
     );
   }
