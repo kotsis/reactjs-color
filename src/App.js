@@ -35,11 +35,12 @@ class App extends Component {
   }
 
   handleSaveColor(){
-    //TO-DO
-    //this.setState(prevState => ({
-    //  error_msg: '',
-    //  color_list: [prevState.color_list, e.target.value]
-    //}));
+    var hex_reg = /^[0-9a-fA-F]{6}$/;
+    if(hex_reg.test(this.state.current_color)){
+      var new_list = this.state.color_list.slice();
+      new_list.push(this.state.current_color);
+      this.setState({current_color: '', color_list: new_list, error_msg: ''});
+    }
   }
 
   showDeleteHexModal(color_index){
@@ -76,6 +77,11 @@ class App extends Component {
                   </div>
     }
 
+    var previewBgColor = '#'+this.state.current_color;
+    if(this.state.current_color === ''){
+      previewBgColor = 'unset';
+    }
+
     //katskos: color list
     const hex_color_list = this.state.color_list.map((colorval, key) =>
       <HexColorItem key={'coloritem'+key} onEditClick={this.showEditHexModal} onDeleteClick={this.showDeleteHexModal} nid={key} colorval={colorval} />
@@ -106,13 +112,13 @@ class App extends Component {
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label htmlFor="hexcolor">HEX color</label>
-                    <input type="text" className="form-control" id="hexcolor" placeholder="" value={this.state.current_color} onChange={this.handleChangedColor} required />
+                    <input type="text" className="form-control" id="hexcolor" placeholder="" value={this.state.current_color} onChange={this.handleChangedColor} />
                     <br/>
                     <button className="btn btn-primary" type="button" onClick={this.handleSaveColor}>Save</button>
                   </div>
                   <div className="col-md-2 mb-3">
                     <label htmlFor="previewcolor">preview</label>
-                    <span className="form-control" id="previewcolor" style={{backgroundColor: '#'+this.state.current_color}}></span>
+                    <span className="form-control" id="previewcolor" style={{backgroundColor: previewBgColor}}></span>
                   </div>
                 </div>
             </div>
