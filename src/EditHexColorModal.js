@@ -37,6 +37,11 @@ class EditHexColorModal extends Component {
   }
 
   render() {
+    var previewBgColor = '#'+this.state.updated_color;
+    if(this.state.updated_color === ''){
+      previewBgColor = 'unset';
+    }
+
     return (
         <div className="modal fade" id={this.props.id} tabIndex="-1" role="dialog" aria-labelledby="exampleModalEditHexTitle" aria-hidden="true">
           <div className="modal-dialog modal-dialog-centered" role="document">
@@ -65,7 +70,7 @@ class EditHexColorModal extends Component {
                   </div>
                   <div className="col-md-2 mb-3">
                     <label htmlFor="previewcolor">preview</label>
-                    <span className="form-control" id="previewcolor" style={{backgroundColor: '#'+this.state.updated_color}}></span>
+                    <span className="form-control" id="previewcolor" style={{backgroundColor: previewBgColor}}></span>
                   </div>
                 </div>
                 <div className="row">
