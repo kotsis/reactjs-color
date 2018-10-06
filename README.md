@@ -2,7 +2,9 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-    npx create-react-app reactjs-colors
+## Usage
+    git clone git@github.com:kotsis/reactjs-color.git
+    npm install
     npm start
-    npm test
-    npm run build
+
+Now you can see the application at http://localhost:3000
