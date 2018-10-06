@@ -4,6 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Usage
     git clone git@github.com:kotsis/reactjs-color.git
+    cd reactjs-color
     npm install
     npm start
 
